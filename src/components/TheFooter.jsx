@@ -1,4 +1,4 @@
-import react from 'react';
+import React from 'react';
 
 import Button from './UserButtons.jsx';
 
@@ -16,7 +16,7 @@ export default function TheFooter() {
       <div className='flex flex-col items-start justify-start'>
         <span className='text-[15px] text-vintageGray'>Grand Total</span>
         {/* H1 FOR TOTAL PRICE IN THE LIST */}
-        <h1 className='text-3xl font-bold text-vintageBlack'>$100.50</h1>
+        <h1 className='text-3xl font-bold text-vintageBlack'>₱100.50</h1>
       </div>
       {/* ADD BUTTON BELOW FOR COPY SUMMARY */}
       <Button btnName={buttonName} btnStyle={buttonStyle} btnIcon={buttonIcon} />
