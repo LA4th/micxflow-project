@@ -1,11 +1,11 @@
 import React from 'react';
 
-export default function Input ({labelName, inptInfo, inptType, inptPlaceholder, inptStyle}) {
+export default function Input ({labelName, inptInfo, inptType, inptPlaceholder, inptStyle, onChange, value}) {
   
   return (
     <div className='w-full flex flex-col'>
       <label htmlFor={inptInfo} className='text-[15px] text-vintageBlack'>{labelName}</label>
-      <input type={inptType} name={inptInfo} id={inptInfo} placeholder={inptPlaceholder} className={inptStyle} />
+      <input type={inptType} name={inptInfo} id={inptInfo} placeholder={inptPlaceholder} className={inptStyle} onChange={onChange} value={value} />
     </div>
   );
 };
