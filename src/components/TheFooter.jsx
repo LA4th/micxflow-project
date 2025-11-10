@@ -2,7 +2,7 @@ import React from 'react';
 
 import Button from './UserButtons.jsx';
 
-export default function TheFooter() {
+export default function TheFooter({itemList}) {
   const buttonName = "Copy Summary";
   const buttonStyle = "p-3 bg-vintageBrown text-white font-bold rounded-md flex flex-row gap-x-2";
   const buttonIcon = (
@@ -10,16 +10,34 @@ export default function TheFooter() {
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
     </svg>
   );
+  const grandTotal = itemList.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const handleCopySummary = () => {
+    if (!itemList || itemList.length === 0) {
+      alert("No items to copy!");
+      return;
+    }
+
+    const summaryLines = itemList.map(item => 
+      `${item.itemName} - ₱${item.price} x ${item.quantity} = ₱${(item.price * item.quantity).toFixed(2)}`
+    );
+
+    const summaryText = summaryLines.join('\n') + `\n\nGrand Total: ₱${grandTotal.toFixed(2)}`;
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(summaryText)
+      .then(() => alert("Summary copied to clipboard!"))
+      .catch(err => alert("Failed to copy: " + err));
+  };
 
   return (
-    <footer className='p-5 flex flex-row items-center justify-between gap-x-5'>
+    <footer className='max-w-full w-full p-5 flex flex-row items-center justify-between gap-x-5'>
       <div className='flex flex-col items-start justify-start'>
         <span className='text-[15px] text-vintageGray'>Grand Total</span>
         {/* H1 FOR TOTAL PRICE IN THE LIST */}
-        <h1 className='text-3xl font-bold text-vintageBlack'>₱100.50</h1>
+        <h1 className='text-3xl font-bold text-vintageBlack'>₱{grandTotal.toFixed(2)}</h1>
       </div>
       {/* ADD BUTTON BELOW FOR COPY SUMMARY */}
-      <Button btnName={buttonName} btnStyle={buttonStyle} btnIcon={buttonIcon} />
+      <Button btnName={buttonName} btnStyle={buttonStyle} btnIcon={buttonIcon} btnClick={handleCopySummary} />
     </footer>
   );
 };

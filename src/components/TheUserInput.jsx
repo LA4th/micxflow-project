@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 
 import Button from './UserButtons.jsx';
 import Input from './UserInputs.jsx';
-import items from '../data/DataItems.js';
 
 export default function TheUserInput ({itemList, setItemList}) {
   /* ITEM NAME INFO */
@@ -44,6 +43,12 @@ export default function TheUserInput ({itemList, setItemList}) {
   };
 
   const handleAdd = () => {
+    if(
+      values.inptItemName.trim() === "" ||
+      values.inptPrice.trim() === "" ||
+      values.inptQuantity.trim() === ""
+    ) return;
+
     setItemList(prev => [
       ...prev,
       {
@@ -52,7 +57,15 @@ export default function TheUserInput ({itemList, setItemList}) {
         price: parseFloat(values.inptPrice),
         quantity: parseInt(values.inptQuantity)
       }
-    ])
+    ]);
+
+    setValues(
+      {
+        inptItemName: "",
+        inptPrice: "",
+        inptQuantity: ""
+      }
+    );
   };
 
   return (

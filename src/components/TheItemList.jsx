@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Button from "./UserButtons.jsx";
 import LoadingSkelliton from "./LoadingSkelliton.jsx";
 
-export default function TheItemList ({itemList}) {
+export default function TheItemList ({itemList, setItemList, search, setEditingItem}) {
   /* BUTTON EDIT ICON */
   const btnEdit = (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7 text-vintageBlack">
@@ -25,48 +25,52 @@ export default function TheItemList ({itemList}) {
     }, 800);
   }, []);
 
-  const itemCheck = () => {
-    if(loading) {
-      return (
-      <LoadingSkelliton />
-      );
+  const filteredItems = itemList.filter(item =>
+    item.itemName.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleDelete = (id) => {
+    setItemList(prev => prev.filter(item => item.id !== id));
+  };
+
+
+  const renderList = () => {
+    if (loading) return <LoadingSkelliton />;
+
+    // No items at all
+    if (!itemList || itemList.length === 0) {
+      return <p className="text-center text-vintageGray p-3.5">No item!</p>;
     }
 
-    if(!itemList || itemList.length === 0) {
-      return (
-        <p className="text-center text-vintageGray p-3.5">No item!</p>
-      );
+    // Search returns no match
+    if (filteredItems.length === 0) {
+      return <p className="text-center text-vintageGray p-3.5">No item found</p>;
     }
 
-    return(
-      itemList.map((item) => {
-        const total = item.price * item.quantity;
+    return filteredItems.map((item) => {
+      const total = item.price * item.quantity;
 
-        return (
-          <li key={item.id} className="bg-white w-full p-3 rounded-xl flex flex-row justify-start gap-x-5 shadow-md">
-            <div className="w-1/2 truncate flex flex-col items-start">
-              {/* ITEM NAME */}
-              <h1 className="truncate w-full text-2xl text-vintageBlack">{item.itemName}</h1>
-              {/* PRICE & QUANTITY */}
-              <p className="w-full truncate text-[15px] text-vintageGray">₱{item.price} x {item.quantity}</p>
-            </div>
-            {/* PRICE * QUANTITY = TOTAL */}
-            <h1 className="w-1/5 truncate font-bold text-vintageBlack text-2xl flex items-center justify-between">₱{total}</h1>
-            <div className="flex flex-row items-center gap-x-4">
-              {/* EDIT BUTTON */}
-              <Button btnIcon={btnEdit} />
-              {/* DELETE BUTTON */}
-              <Button btnIcon={btnDelete} />
-            </div>
-          </li>
-        );
-      })
-    );
+      return (
+        <li key={item.id} className="bg-white w-full p-3 rounded-xl flex flex-row justify-start gap-x-5 shadow-md">
+          <div className="w-1/2 truncate flex flex-col items-start">
+            <h1 className="truncate w-full text-2xl text-vintageBlack">{item.itemName}</h1>
+            <p className="w-full truncate text-[15px] text-vintageGray">₱{item.price} x {item.quantity}</p>
+          </div>
+
+          <h1 className="w-1/5 truncate font-bold text-vintageBlack text-2xl flex items-center justify-between">₱{total}</h1>
+
+          <div className="flex flex-row items-center gap-x-4">
+            <Button btnIcon={btnEdit} btnClick={() => setEditingItem(item)}  />
+            <Button btnIcon={btnDelete} btnClick={() => handleDelete(item.id)} />
+          </div>
+        </li>
+      );
+    });
   };
 
   return (
     <ul className="w-full max-w-full flex flex-col gap-y-5">
-      {itemCheck()}
+      {renderList()}
     </ul>
   );
 };
