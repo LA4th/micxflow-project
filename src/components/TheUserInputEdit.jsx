@@ -65,8 +65,8 @@ export default function TheItemEdit({ item, setItemList, cancelEdit }) {
         />
       </div>
       <div className='flex gap-3'>
-        <Button btnClick={handleSave} btnName="Save" btnStyle="bg-green-500 w-full p-3 text-white font-bold rounded-md" />
-        <Button btnClick={cancelEdit} btnName="Cancel" btnStyle="bg-gray-400 w-full p-3 text-white font-bold rounded-md" />
+        <Button btnClick={handleSave} btnName="Save" btnStyle="bg-vintageBlue w-full p-3 text-white font-bold rounded-md" />
+        <Button btnClick={cancelEdit} btnName="Cancel" btnStyle="bg-red-400 w-full p-3 text-white font-bold rounded-md" />
       </div>
     </div>
   );
